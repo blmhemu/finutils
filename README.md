@@ -8,6 +8,8 @@ Finutils is a collection of some finance related python utilities.
 * [python](https://www.python.org/)>=(tested to work with 3.7)
 * [pandas](https://pandas.pydata.org/)>=(tested to work with 1.1.0)
 * [pandas_datareader](https://pandas-datareader.readthedocs.io/en/latest/)>=(tested to work with 0.9.0)
+* [importlib-metadata](https://importlib-metadata.readthedocs.io/en/latest/)>=1.7.0 (needed for intel python distributions only)
+* [readme-renderer](https://github.com/pypa/readme_renderer)>=26.0 (needed for intel python distributions only)
 
 ## CachedReader (finutils.CachedReader)
 This is a wrapper around [pandas_datareader.data.DataReader](https://pandas-datareader.readthedocs.io/en/latest/remote_data.html).
