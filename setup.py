@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as fh:
 
 setup(
     name="finutils",  # Replace with your own username
-    version="0.0.1",
+    version="0.0.2",
     license="MIT",
     author="Hemanth Bollamreddi",
     author_email="blmhemu@gmail.com",
