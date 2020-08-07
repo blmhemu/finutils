@@ -28,9 +28,11 @@ from finutils import CachedReader
 
 expire_after = datetime.timedelta(days=3)
 session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
-cr = CachedReader('./data', 'yahoo', session)
 
+cr = CachedReader('./data', 'yahoo', session)
 df = cr.get_data('RELIANCE.NS', datetime.date(2010, 1, 1), datetime.date(2020, 1, 1))
+
+print(df)
 ```
 
 #### Optional Way :
