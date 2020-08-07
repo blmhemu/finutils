@@ -1,0 +1,7 @@
+__pycache__/*
+finutils/__pycache__/*
+dist
+finutils.egg-info
+*.pyc
+build
+.eggs
