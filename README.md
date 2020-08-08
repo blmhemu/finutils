@@ -27,10 +27,14 @@ import requests_cache
 from finutils import CachedReader
 
 expire_after = datetime.timedelta(days=3)
-session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
+session = requests_cache.CachedSession(cache_name="cache", backend="sqlite", expire_after=expire_after)
 
-cr = CachedReader('./data', 'yahoo', session)
-df = cr.get_data('RELIANCE.NS', datetime.date(2010, 1, 1), datetime.date(2020, 1, 1))
+cr = CachedReader("./data", "yahoo", session)
+df = cr.get_data("RELIANCE.NS", datetime.date(2010, 1, 1), datetime.date(2020, 1, 1))
+
+# These are also supported
+# df = cr.get_data("RELIANCE.NS")
+# df = cr.get_data("RELIANCE.NS", "2010-1-1", "2020-1-1") # Supported in 0.0.3
 
 print(df)
 ```
@@ -42,8 +46,12 @@ import datetime
 import requests_cache
 from finutils import CachedReader
 
-cr = CachedReader('./data', 'yahoo')
-df = cr.filter_df_by_date(cr.get_scrip_data_local('RELIANCE.NS'), datetime.date(2010, 1, 1), datetime.date(2020, 1, 1))
+cr = CachedReader("./data", "yahoo")
+df = cr.filter_df_by_date(cr.get_scrip_data_local("RELIANCE.NS"), datetime.date(2010, 1, 1), datetime.date(2020, 1, 1))
+
+# These are also supported
+# df = cr.filter_df_by_date(cr.get_scrip_data_local("RELIANCE.NS"))
+# df = cr.filter_df_by_date(cr.get_scrip_data_local("RELIANCE.NS"), "2010-1-1", "2020-1-1") # Supported in 0.0.3
 
 print(df)
 ```

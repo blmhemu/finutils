@@ -3,10 +3,11 @@ __all__ = ["CachedReader"]
 import os
 import shutil
 import shelve
+from numpy.lib.arraysetops import isin
 import pandas_datareader.data as web
 from datetime import date, timedelta
 from pandas import read_csv, DataFrame
-from typing import Optional
+from typing import Union
 
 
 class CachedReader:
@@ -75,23 +76,25 @@ class CachedReader:
 
     @staticmethod
     def filter_df_by_date(
-        df: DataFrame, start: Optional[date] = None, end: Optional[date] = None,
+        df: DataFrame,
+        start_date: Union[str, date] = None,
+        end_date: Union[str, date] = None,
     ) -> DataFrame:
-        if start is None and end is None:
+        if isinstance(start_date, date):
+            start_date = start_date.isoformat()
+        if isinstance(end_date, date):
+            end_date = end_date.isoformat()
+        if start_date is None and end_date is None:
             return df
-        if start is None:
-            return df.loc[: end.isoformat()]
-        if end is None:
-            return df.loc[start.isoformat() :]
+        if start_date is None:
+            return df.loc[:end_date]
+        if end_date is None:
+            return df.loc[start_date:]
         else:
-            return df.loc[start.isoformat() : end.isoformat()]
+            return df.loc[start_date:end_date]
 
     def fetch_and_save_latest_data(self, scrip: str) -> DataFrame:
         scrip_file_path: str = self.get_scrip_file_path(scrip)
-        if self.is_last_updated_today(scrip):
-            print("Already updated the data of %s earlier today." % (scrip))
-            return self.get_scrip_data_local(scrip_file_path)
-
         today = date.today()
         # Default end date should be yesterday (as market OHLCV data might not be available for today)
         default_end_date = today - timedelta(days=1)
@@ -106,7 +109,9 @@ class CachedReader:
             downloaded_df.to_csv(scrip_file_path)
             self.cache_update(scrip, today)
             return downloaded_df
-
+        if self.is_last_updated_today(scrip):
+            print("Already updated the data of %s earlier today." % (scrip))
+            return self.get_scrip_data_local(scrip_file_path)
         local_df = self.get_scrip_data_local(scrip_file_path)
         local_end_date = max(local_df.index)
         if default_end_date > local_end_date:
@@ -133,7 +138,10 @@ class CachedReader:
         return local_df
 
     def get_data(
-        self, scrip: str, start_date: date = None, end_date: date = None,
+        self,
+        scrip: str,
+        start_date: Union[str, date] = None,
+        end_date: Union[str, date] = None,
     ) -> DataFrame:
         df = self.fetch_and_save_latest_data(scrip)
         return self.filter_df_by_date(df, start_date, end_date)
