@@ -3,7 +3,6 @@ __all__ = ["CachedReader"]
 import os
 import shutil
 import shelve
-from numpy.lib.arraysetops import isin
 import pandas_datareader.data as web
 from datetime import date, timedelta
 from pandas import read_csv, DataFrame
